@@ -3,19 +3,19 @@
 
 	$data = $_POST;
 
-	function captcha_show(){
-		$questions = array(
-			1 => 'Столица России',
-			2 => 'Столица США',
-			3 => '2 + 3',
-			4 => '15 + 14',
-			5 => '45 - 10',
-			6 => '33 - 3'
-		);
-		$num = mt_rand( 1, count($questions) );
-		$_SESSION['captcha'] = $num;
-		echo $questions[$num];
-	}
+	// function captcha_show(){
+	// 	// $questions = array(
+	// 	// 	1 => 'Столица России',
+	// 	// 	2 => 'Столица США',
+	// 	// 	3 => '2 + 3',
+	// 	// 	4 => '15 + 14',
+	// 	// 	5 => '45 - 10',
+	// 	// 	6 => '33 - 3'
+	// 	// );
+	// 	// $num = mt_rand( 1, count($questions) );
+	// 	$_SESSION['captcha'] = $num;
+	// 	echo $questions[$num];
+	// }
 
 	//если кликнули на button
 	if ( isset($data['do_signup']) )
@@ -54,19 +54,19 @@
 			$errors[] = 'Пользователь с таким Email уже существует!';
 		}
 
-		//проверка капчи
-		$answers = array(
-			1 => 'москва',
-			2 => 'вашингтон',
-			3 => '5',
-			4 => '29',
-			5 => '35',
-			6 => '30'
-		);
-		if ( $_SESSION['captcha'] != array_search( mb_strtolower($_POST['captcha']), $answers ) )
-		{
-			$errors[] = 'Ответ на вопрос указан не верно!';
-		}
+		// проверка капчи
+		// $answers = array(
+		// 	1 => 'москва',
+		// 	2 => 'вашингтон',
+		// 	3 => '5',
+		// 	4 => '29',
+		// 	5 => '35',
+		// 	6 => '30'
+		// );
+		// if ( $_SESSION['captcha'] != array_search( mb_strtolower($_POST['captcha']), $answers ) )
+		// {
+		// 	$errors[] = 'Ответ на вопрос указан не верно!';
+		// }
 
 
 		if ( empty($errors) )
@@ -77,7 +77,11 @@
 			$user->email = $data['email'];
 			$user->password = password_hash($data['password'], PASSWORD_DEFAULT); //пароль нельзя хранить в открытом виде, мы его шифруем при помощи функции password_hash для php > 5.6
 			R::store($user);
-			echo '<div style="color:dreen;">Вы успешно зарегистрированы!</div><hr>';
+			$_SESSION['logged_user'] = $user;
+			ob_start();
+			header('Location: /index.php');
+			ob_end_flush();
+			die();
 		}else
 		{
 			echo '<div id="errors" style="color:red;">' .array_shift($errors). '</div><hr>';
@@ -99,9 +103,6 @@
 
 	<strong>Повторите пароль</strong>
 	<input type="password" name="password_2" value="<?php echo @$data['password_2']; ?>"><br/>
-
-	<strong><?php captcha_show(); ?></strong>
-	<input type="text" name="captcha" ><br/>
 
 	<button type="submit" name="do_signup">Регистрация</button>
 </form>
