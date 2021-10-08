@@ -42,6 +42,7 @@
         center: 'title',
         end: 'dayGridMonth,dayGridWeek,dayGridDay'
       },
+      events: 'getData.php',
       selectable: true
     });
     calendar.render();
