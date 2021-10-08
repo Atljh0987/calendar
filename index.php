@@ -43,7 +43,23 @@
         end: 'dayGridMonth,dayGridWeek,dayGridDay'
       },
       events: 'getData.php',
-      selectable: true
+      selectable: true,
+      selectHelper: true,
+      select: function(time) {
+        var title = prompt("Enter Event Title");
+        console.log(time)
+        if(title) {
+          $.ajax({
+            url: "/insert.php",
+            type: "POST",
+            data: {title: title, start: time.startStr, end: time.endStr},
+            success: function() {
+              calendar.refetchEvents()
+              alert("Success")
+            }
+          })
+        }
+      }
     });
     calendar.render();
   })

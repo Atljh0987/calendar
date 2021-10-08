@@ -12,7 +12,10 @@
 			{
 				//если пароль совпадает, то нужно авторизовать пользователя
 				$_SESSION['logged_user'] = $user;
-				echo '<div style="color:dreen;">Вы авторизованы!<br/> Можете перейти на <a href="/">главную</a> страницу.</div><hr>';
+				ob_start();
+				header('Location: /index.php');
+				ob_end_flush();
+				die();
 			}else
 			{
 				$errors[] = 'Неверно введен пароль!';

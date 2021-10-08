@@ -77,6 +77,7 @@
 			$user->email = $data['email'];
 			$user->password = password_hash($data['password'], PASSWORD_DEFAULT); //пароль нельзя хранить в открытом виде, мы его шифруем при помощи функции password_hash для php > 5.6
 			R::store($user);
+			
 			$_SESSION['logged_user'] = $user;
 			ob_start();
 			header('Location: /index.php');
