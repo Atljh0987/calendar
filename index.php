@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -37,10 +37,11 @@
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
       editable: true,
+      initialView: 'timeGridWeek',
       headerToolbar: { 
         start: 'prev,next today',
         center: 'title',
-        end: 'dayGridMonth,dayGridWeek,dayGridDay'
+        end: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
       events: 'getData.php',
       selectable: true,
@@ -64,7 +65,9 @@
     calendar.render();
   })
 
+
 </script>
+
 </html>	
 
 
