@@ -48,7 +48,6 @@
       selectHelper: true,
       select: function(time) {
         var title = prompt("Enter Event Title");
-        console.log(time)
         if(title) {
           $.ajax({
             url: "/insert.php",
@@ -57,6 +56,40 @@
             success: function() {
               calendar.refetchEvents()
               alert("Success")
+            }
+          })
+        }
+      },
+      eventResize: function(info) {
+        var title = info.event.title;
+        var start = info.event.startStr;
+        var end = info.event.endStr;
+        var id = info.event.id;
+        if(title) {
+          $.ajax({
+            url: "/update.php",
+            type: "POST",
+            data: {title: title, start: start, end: end, id: id},
+            success: function() {
+              calendar.refetchEvents()
+              alert("Event updated")
+            }
+          })
+        }
+      },
+      eventDrop: function(info) {
+        var title = info.event.title;
+        var start = info.event.startStr;
+        var end = info.event.endStr;
+        var id = info.event.id;
+        if(title) {
+          $.ajax({
+            url: "/update.php",
+            type: "POST",
+            data: {title: title, start: start, end: end, id: id},
+            success: function() {
+              calendar.refetchEvents()
+              alert("Event updated")
             }
           })
         }
