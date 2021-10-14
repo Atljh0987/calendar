@@ -10,7 +10,5 @@
     $bean->start_event = $data['start'];
     $bean->end_event = $data['end'];
     R::store($bean);
-
-    var_dump($bean);
   }
 ?>
