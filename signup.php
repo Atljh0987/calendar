@@ -123,7 +123,7 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form p-l-55 p-r-55 p-t-178" action="login.php" method="POST">
+				<form class="login100-form validate-form p-l-55 p-r-55 p-t-178" action="/signup.php" method="POST">
 					<span class="login100-form-title">
 						Регистрация
 					</span>
@@ -134,7 +134,7 @@
 					</div>
 
 					<div class="wrap-input100 validate-input m-b-16" data-validate="Введите Email">
-						<input class="input100" type="text" name="login" placeholder="Email" value="<?php echo @$data['email']; ?>">
+						<input class="input100" type="text" name="email" placeholder="Email" value="<?php echo @$data['email']; ?>">
 						<span class="focus-input100"></span>
 					</div>
 
@@ -144,7 +144,7 @@
 					</div>
 
 					<div class="wrap-input100 validate-input  m-b-16" data-validate = "Повторите пароль">
-						<input class="input100" type="password" name="password" placeholder="Повторите пароль"  value="<?php echo @$data['password_2']; ?>">
+						<input class="input100" type="password" name="password_2" placeholder="Повторите пароль"  value="<?php echo @$data['password_2']; ?>">
 						<span class="focus-input100"></span>
 					</div>
 
