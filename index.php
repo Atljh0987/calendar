@@ -36,10 +36,11 @@
     <div class="enter hide">
       <div class="enter_wrapper">
         <form action="#" class="enter_form">
-          <h3 class="enter_main_title">Вход</h3>
-          <label>Логин: <input type="text"></label>
-          <label>Пароль: <input type="text"></label>
-
+          <h3 class="enter_main_title">Без имени</h3>
+          <label>Начало: <input class="enter_time-start" type="datetime-local"></label>
+          <label>Конец: <input class="enter_time-end" type="datetime-local"></label>
+          <label>Комментарий<Br>
+         <textarea name="comment" cols="40" rows="3"></textarea></label>
           <input type="submit">
         </form>
         <div class="enter_chooser">
@@ -65,17 +66,20 @@
 	<?php endif; ?>
 </body>
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/moment/moment.js"></script>
 <script src='node_modules/fullcalendar/main.min.js'></script>
 <!-- <script src='node_modules/bootstrap/dist/js/bootstrap.min.js'></script> -->
 <!-- <script src='node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'></script> -->
 <script>
   $(document).ready(function() {
     var calendarEl = document.getElementById('calendar');
+    var data = {};
     $('.enter_bg').on('click', function() {
       $('.enter').addClass('hide')
     })
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
+      timeZone: "America/Chicago",
       editable: true,
       initialView: 'dayGridMonth',
       showNonCurrentDates: false,
@@ -134,8 +138,15 @@
       },
       eventClick: function (info) {
         document.querySelector('layout_form_title')
+        data.title = info.event.title;
+        data.start = info.event.startStr;
+        data.end = info.event.endStr;
+        data.id = info.event.id;
+        
         $('.enter').removeClass('hide');
         $('.enter_main_title').text(info.event.title)
+        $('.enter_time-start').val(info.event.startStr)
+        $('.enter_time-end').val(info.event.endStr)
         // if(confirm("Are you sure you want to remove it?")) {
         //   var title = info.event.title;
         //   var start = info.event.startStr;
