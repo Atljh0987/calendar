@@ -88,7 +88,8 @@
 }
 
 #calendar {
-    width: 70%;
+    margin: 0 auto;
+    width: 80%;
 }
 
 .container_settings {
@@ -167,3 +168,67 @@
     opacity: .6;
     cursor: pointer;
   }
+
+  @media screen and (max-width: 700px) {
+  header {
+     justify-content: center;
+     flex-wrap: wrap;
+  }
+
+  header .header__logo {
+      display: none;
+  }
+
+  header .autorize {
+      margin: 0 auto;
+  }
+
+  #calendar {
+      width: 100%;
+  }
+  
+  .bridge {
+    display: none;
+  }
+  
+  .manyPhotos li {
+    width: 100%;
+  }
+  
+  .search_icon {
+    background-color: #fff;
+    border-radius: 50% 0;
+  }
+  
+  .photo_art, .photo_art img {
+    width: 100%;
+    padding: 0;
+  }
+  
+  .top_panel {
+    display: none;
+  }
+  
+  .nav {
+    display: none;
+    order: 0;
+    margin: 0 auto;
+    flex-direction: column;
+  }
+  
+  .header_menu_btn {
+    display: flex;
+    padding: 20px 40px;
+  }
+
+  .nav > li {
+    padding: 3px;
+  }
+
+  .search {
+    text-align: right;
+    order: 2;
+    justify-content: right;
+  }
+}
+

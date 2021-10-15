@@ -23,11 +23,11 @@
       </div>
       </header>
 
-      <div class="wrapper">
+    <div class="wrapper">
       <div class="container">
-        <div class="container_settings">
+        <!-- <div class="container_settings">
           <h1>Контейнер</h1>
-        </div>
+        </div> -->
         <div id="calendar"></div>
       </div>
     </div>
@@ -93,7 +93,8 @@
     })
 
     $('.change_button').on('click', function() {
-
+      
+      $('.enter_error').text("")
       let id = data.id
       let title = data.title
       let start = $('.enter_time-start').val()
@@ -113,12 +114,9 @@
             calendar.refetchEvents()
           }
         })
-        $('.enter_error').text("")
       } else {
         $('.enter_error').text("Поля с датой и временем обязательны к заполнению")
       }
-
-      
     })
 
     $('.delete_button').on('click', function() {
@@ -162,7 +160,6 @@
           $('.add_time-start').val("")
           $('.add_time-end').val("")
           $('.add_commentary').val("")
-          $('.add_error').text("")
       } else {
         $('.add_error').text("Название и время обязательны к заполнению")
       }
@@ -184,6 +181,8 @@
       select: function(time) {
         $('.enter').removeClass('hide');
         $('.add_form').removeClass('hide')
+      
+        $('.add_error').text("")
 
         let start = (time.startStr.length < 11)? time.startStr + "T00:00" : time.startStr
         let end = (time.endStr.length < 11)? time.endStr + "T00:00" : time.endStr
@@ -231,6 +230,8 @@
         data.commentary = info.event.extendedProps.description        
         $('.enter').removeClass('hide');
         $('.enter_form').removeClass('hide')
+      
+        $('.add_error').text("")
 
         $('.enter_main_title').text(info.event.title)
         $('.enter_time-start').val(info.event.startStr)
