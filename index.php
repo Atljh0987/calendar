@@ -7,7 +7,7 @@
 	<title>Document</title>
   <link href='node_modules/fullcalendar/main.min.css' rel='stylesheet' />
   <!-- <link href='node_modules/bootstrap/dist/css/bootstrap.min.css' rel='stylesheet' /> -->
-  <link rel="stylesheet" type="text/css" href="styles/index.css">
+  <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 <body>
 	<?php 
@@ -15,19 +15,39 @@
 	?>
 
 	<?php if ( isset ($_SESSION['logged_user']) ) : ?>
-    <div class="wrapper">
-      <div class="header">
+      <header class="header">
+        <h1 class="header__logo">Календарь-планировщик</h1>
         <div class="autorize">
-          <span>Привет, <?php echo $_SESSION['logged_user']->login; ?>!</span><br/>
+          <h3 class="autorize__login-text"><?php echo $_SESSION['logged_user']->login; ?></h3><br/>
           <a href="logout.php" class="autorize__logout">Выйти</a>
-        </div>
       </div>
+      </header>
 
+      <div class="wrapper">
       <div class="container">
         <div class="container_settings">
           <h1>Контейнер</h1>
         </div>
         <div id="calendar"></div>
+      </div>
+    </div>
+
+    <div class="main_enter_form">
+    <div class="enter hide">
+      <div class="enter_wrapper">
+        <form action="#" class="enter_form">
+          <h3 class="enter_main_title">Вход</h3>
+          <label>Логин: <input type="text"></label>
+          <label>Пароль: <input type="text"></label>
+
+          <input type="submit">
+        </form>
+        <div class="enter_chooser">
+          <span id="enter_btn">Вход</span> | 
+          <span id="reg_btn">Регистрация</span>
+        </div>
+      </div>   
+      <div class="enter_bg"></div>
       </div>
     </div>
 	<?php else : ?>
@@ -51,8 +71,11 @@
 <script>
   $(document).ready(function() {
     var calendarEl = document.getElementById('calendar');
+    $('.enter_bg').on('click', function() {
+      $('.enter').addClass('hide')
+    })
+
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      // themeSystem: 'bootstrap',
       editable: true,
       initialView: 'dayGridMonth',
       showNonCurrentDates: false,
@@ -110,25 +133,30 @@
         }
       },
       eventClick: function (info) {
-        if(confirm("Are you sure you want to remove it?")) {
-          var title = info.event.title;
-          var start = info.event.startStr;
-          var end = info.event.endStr;
-          var id = info.event.id;
-          if(title) {
-            $.ajax({
-              url: "/delete.php",
-              type: "POST",
-              data: {title: title, start: start, end: end, id: id},
-              success: function() {
-                calendar.refetchEvents()
-              }
-            })
-          }
-        }
+        document.querySelector('layout_form_title')
+        $('.enter').removeClass('hide');
+        $('.enter_main_title').text(info.event.title)
+        // if(confirm("Are you sure you want to remove it?")) {
+        //   var title = info.event.title;
+        //   var start = info.event.startStr;
+        //   var end = info.event.endStr;
+        //   var id = info.event.id;
+        //   if(title) {
+        //     $.ajax({
+        //       url: "/delete.php",
+        //       type: "POST",
+        //       data: {title: title, start: start, end: end, id: id},
+        //       success: function() {
+        //         calendar.refetchEvents()
+        //       }
+        //     })
+        //   }
+        // }
       }
     });
     calendar.render();
+
+
   })
 
 
