@@ -37,6 +37,7 @@
       <div class="enter_wrapper">
 
         <div class="enter_form hide">
+          <h4 class="enter_error" style="color: red"></h4>
           <h3 class="enter_main_title">Без имени</h3>
           <label>Начало: <input class="enter_time-start" type="datetime-local"></label>
           <label>Конец: <input class="enter_time-end" type="datetime-local"></label>
@@ -48,6 +49,7 @@
         </div>
 
         <div class="add_form hide">
+          <h4 class="add_error" style="color: red"></h4>
           <h3>Добавление события</h3>
           <label>Название: <input class="add_title" type="text"></label>
           <label>Начало: <input class="add_time-start" type="datetime-local"></label>
@@ -91,9 +93,6 @@
     })
 
     $('.change_button').on('click', function() {
-      $('.enter').addClass('hide')
-      $('.add_form').addClass('hide')
-      $('.enter_form').addClass('hide')
 
       let id = data.id
       let title = data.title
@@ -101,14 +100,25 @@
       let end = $('.enter_time-end').val()
       let commentary = $('.enter_commentary').val()
 
-      $.ajax({
-        url: "/update.php",
-        type: "POST",
-        data: {title: title, start: start, end: end, commentary: commentary, id: id},
-        success: function() {
-          calendar.refetchEvents()
-        }
-      })
+      if(start && end) {
+        $('.enter').addClass('hide')
+        $('.add_form').addClass('hide')
+        $('.enter_form').addClass('hide')
+
+        $.ajax({
+          url: "/update.php",
+          type: "POST",
+          data: {title: title, start: start, end: end, commentary: commentary, id: id},
+          success: function() {
+            calendar.refetchEvents()
+          }
+        })
+        $('.enter_error').text("")
+      } else {
+        $('.enter_error').text("Поля с датой и временем обязательны к заполнению")
+      }
+
+      
     })
 
     $('.delete_button').on('click', function() {
@@ -128,17 +138,17 @@
       })
     })
 
-    $('.add_button').on('click', function() {      
-      $('.enter').addClass('hide')
-      $('.add_form').addClass('hide')
-      $('.enter_form').addClass('hide')
-
+    $('.add_button').on('click', function() {
       let title = $('.add_title').val()
       let start = $('.add_time-start').val()
       let end = $('.add_time-end').val()
       let commentary = $('.add_commentary').val()
 
-      if(title && start && end) {
+      if(title && start && end) {    
+        $('.enter').addClass('hide')
+        $('.add_form').addClass('hide')
+        $('.enter_form').addClass('hide')
+
         $.ajax({
             url: "/insert.php",
             type: "POST",
@@ -147,12 +157,15 @@
               calendar.refetchEvents()
             }
           })
-      }
 
-      $('.add_title').val("")
-      $('.add_time-start').val("")
-      $('.add_time-end').val("")
-      $('.add_commentary').val("")
+          $('.add_title').val("")
+          $('.add_time-start').val("")
+          $('.add_time-end').val("")
+          $('.add_commentary').val("")
+          $('.add_error').text("")
+      } else {
+        $('.add_error').text("Название и время обязательны к заполнению")
+      }
     })
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -172,20 +185,11 @@
         $('.enter').removeClass('hide');
         $('.add_form').removeClass('hide')
 
-        $('.add_time-start').val(time.startStr + "T00:00")
-        $('.add_time-end').val(time.endStr + "T00:00")
-
-        // var title = prompt("Enter Event Title");
-        // if(title) {
-        //   $.ajax({
-        //     url: "/insert.php",
-        //     type: "POST",
-        //     data: {title: title, start: time.startStr, end: time.endStr},
-        //     success: function() {
-        //       calendar.refetchEvents()
-        //     }
-        //   })
-        // }
+        let start = (time.startStr.length < 11)? time.startStr + "T00:00" : time.startStr
+        let end = (time.endStr.length < 11)? time.endStr + "T00:00" : time.endStr
+        
+        $('.add_time-start').val(start)
+        $('.add_time-end').val(end)
       },
       eventResize: function(info) {
         var title = info.event.title;
@@ -227,7 +231,6 @@
         data.commentary = info.event.extendedProps.description        
         $('.enter').removeClass('hide');
         $('.enter_form').removeClass('hide')
-        console.log(info.event.startStr)
 
         $('.enter_main_title').text(info.event.title)
         $('.enter_time-start').val(info.event.startStr)
@@ -236,8 +239,6 @@
       }
     });
     calendar.render();
-
-
   })
 
 
