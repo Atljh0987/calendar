@@ -35,17 +35,14 @@
     <div class="main_enter_form">
     <div class="enter hide">
       <div class="enter_wrapper">
-        <form action="#" class="enter_form">
+        <div action="update.php" class="enter_form">
           <h3 class="enter_main_title">Без имени</h3>
           <label>Начало: <input class="enter_time-start" type="datetime-local"></label>
           <label>Конец: <input class="enter_time-end" type="datetime-local"></label>
           <label>Комментарий<Br>
-         <textarea name="comment" cols="40" rows="3"></textarea></label>
-          <input type="submit">
-        </form>
-        <div class="enter_chooser">
-          <span id="enter_btn">Вход</span> | 
-          <span id="reg_btn">Регистрация</span>
+            <textarea name="comment" cols="40" rows="3"></textarea>
+          </label>
+          <input class="change_button" type="button" value="Изменить" />
         </div>
       </div>   
       <div class="enter_bg"></div>
@@ -76,6 +73,22 @@
     var data = {};
     $('.enter_bg').on('click', function() {
       $('.enter').addClass('hide')
+    })
+
+    $('.change_button').on('click', function() {
+      let id = data.id
+      let title = data.title
+      let start = $('.enter_time-start').val()
+      let end = $('.enter_time-end').val()
+      $.ajax({
+            url: "/update.php",
+            type: "POST",
+            data: {title: title, start: start, end: end, id: id},
+            success: function() {
+              calendar.refetchEvents()
+            }
+          })
+
     })
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
