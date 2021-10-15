@@ -35,14 +35,27 @@
     <div class="main_enter_form">
     <div class="enter hide">
       <div class="enter_wrapper">
-        <div action="update.php" class="enter_form">
+
+        <div class="enter_form hide">
           <h3 class="enter_main_title">Без имени</h3>
           <label>Начало: <input class="enter_time-start" type="datetime-local"></label>
           <label>Конец: <input class="enter_time-end" type="datetime-local"></label>
           <label>Комментарий<Br>
-            <textarea name="comment" cols="40" rows="3"></textarea>
+            <textarea class="enter_commentary" name="comment" cols="40" rows="3"></textarea>
           </label>
           <input class="change_button" type="button" value="Изменить" />
+          <input class="delete_button" type="button" value="Удалить" />
+        </div>
+
+        <div class="add_form hide">
+          <h3>Добавление события</h3>
+          <label>Название: <input class="add_title" type="text"></label>
+          <label>Начало: <input class="add_time-start" type="datetime-local"></label>
+          <label>Конец: <input class="add_time-end" type="datetime-local"></label>
+          <label>Комментарий<Br>
+            <textarea class="add_commentary" name="comment" cols="40" rows="3"></textarea>
+          </label>
+          <input class="add_button" type="button" value="Добавить" />
         </div>
       </div>   
       <div class="enter_bg"></div>
@@ -73,26 +86,77 @@
     var data = {};
     $('.enter_bg').on('click', function() {
       $('.enter').addClass('hide')
+      $('.enter_form').addClass('hide')
+      $('.add_form').addClass('hide')
     })
 
     $('.change_button').on('click', function() {
+      $('.enter').addClass('hide')
+      $('.add_form').addClass('hide')
+      $('.enter_form').addClass('hide')
+
       let id = data.id
       let title = data.title
       let start = $('.enter_time-start').val()
       let end = $('.enter_time-end').val()
+      let commentary = $('.enter_commentary').val()
+
       $.ajax({
-            url: "/update.php",
+        url: "/update.php",
+        type: "POST",
+        data: {title: title, start: start, end: end, commentary: commentary, id: id},
+        success: function() {
+          calendar.refetchEvents()
+        }
+      })
+    })
+
+    $('.delete_button').on('click', function() {
+      $('.enter').addClass('hide')
+      $('.add_form').addClass('hide')
+      $('.enter_form').addClass('hide')
+      
+      let id = data.id
+      let title = data.title      
+      $.ajax({
+        url: "/delete.php",
+        type: "POST",
+        data: {title: title, id: id},
+        success: function() {
+          calendar.refetchEvents()
+        }
+      })
+    })
+
+    $('.add_button').on('click', function() {      
+      $('.enter').addClass('hide')
+      $('.add_form').addClass('hide')
+      $('.enter_form').addClass('hide')
+
+      let title = $('.add_title').val()
+      let start = $('.add_time-start').val()
+      let end = $('.add_time-end').val()
+      let commentary = $('.add_commentary').val()
+
+      if(title && start && end) {
+        $.ajax({
+            url: "/insert.php",
             type: "POST",
-            data: {title: title, start: start, end: end, id: id},
+            data: {title: title, start: start, end: end, commentary: commentary},
             success: function() {
               calendar.refetchEvents()
             }
           })
+      }
 
+      $('.add_title').val("")
+      $('.add_time-start').val("")
+      $('.add_time-end').val("")
+      $('.add_commentary').val("")
     })
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      timeZone: "America/Chicago",
+      timeZone: 'America/New_York',
       editable: true,
       initialView: 'dayGridMonth',
       showNonCurrentDates: false,
@@ -105,17 +169,23 @@
       selectable: true,
       selectHelper: true,
       select: function(time) {
-        var title = prompt("Enter Event Title");
-        if(title) {
-          $.ajax({
-            url: "/insert.php",
-            type: "POST",
-            data: {title: title, start: time.startStr, end: time.endStr},
-            success: function() {
-              calendar.refetchEvents()
-            }
-          })
-        }
+        $('.enter').removeClass('hide');
+        $('.add_form').removeClass('hide')
+
+        $('.add_time-start').val(time.startStr + "T00:00")
+        $('.add_time-end').val(time.endStr + "T00:00")
+
+        // var title = prompt("Enter Event Title");
+        // if(title) {
+        //   $.ajax({
+        //     url: "/insert.php",
+        //     type: "POST",
+        //     data: {title: title, start: time.startStr, end: time.endStr},
+        //     success: function() {
+        //       calendar.refetchEvents()
+        //     }
+        //   })
+        // }
       },
       eventResize: function(info) {
         var title = info.event.title;
@@ -150,32 +220,19 @@
         }
       },
       eventClick: function (info) {
-        document.querySelector('layout_form_title')
         data.title = info.event.title;
         data.start = info.event.startStr;
         data.end = info.event.endStr;
         data.id = info.event.id;
-        
+        data.commentary = info.event.extendedProps.description        
         $('.enter').removeClass('hide');
+        $('.enter_form').removeClass('hide')
+        console.log(info.event.startStr)
+
         $('.enter_main_title').text(info.event.title)
         $('.enter_time-start').val(info.event.startStr)
         $('.enter_time-end').val(info.event.endStr)
-        // if(confirm("Are you sure you want to remove it?")) {
-        //   var title = info.event.title;
-        //   var start = info.event.startStr;
-        //   var end = info.event.endStr;
-        //   var id = info.event.id;
-        //   if(title) {
-        //     $.ajax({
-        //       url: "/delete.php",
-        //       type: "POST",
-        //       data: {title: title, start: start, end: end, id: id},
-        //       success: function() {
-        //         calendar.refetchEvents()
-        //       }
-        //     })
-        //   }
-        // }
+        $('.enter_commentary').val(info.event.extendedProps.description)
       }
     });
     calendar.render();

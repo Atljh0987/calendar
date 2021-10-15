@@ -127,21 +127,21 @@
     z-index: 100;
   }
   
-  .enter_form, .reg_form {
+  .enter_form, .add_form {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
   }
   
-  .enter_form > label, .reg_form > label {
+  .enter_form > label, .add_form > label {
     width: 100%;
     text-align: right;
     padding: 5px 0;
   }
   
-  .enter_form > h3, .reg_form > h3,
-  .enter_form > input[type="submit"], .reg_form > input[type="submit"]{
+  .enter_form > h3, .add_form > h3,
+  .enter_form > input[type="submit"], .add_form > input[type="submit"]{
     margin: 10px 0;
   }
   
