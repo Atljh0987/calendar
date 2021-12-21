@@ -82,6 +82,8 @@
 <script src='node_modules/fullcalendar/main.min.js'></script>
 <!-- <script src='node_modules/bootstrap/dist/js/bootstrap.min.js'></script> -->
 <!-- <script src='node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'></script> -->
+
+
 <script>
   $(document).ready(function() {
     var calendarEl = document.getElementById('calendar');
