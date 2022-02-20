@@ -17,6 +17,10 @@
 	<?php if ( isset ($_SESSION['logged_user']) ) : ?>
       <header class="header">
         <h1 class="header__logo">Календарь-планировщик</h1>
+        <div>
+          <div id="txtButton" class="autorize__logout">Выгрузить</div>
+          <a href="statistic.php" class="autorize__logout">Статистика</a>
+        </div>
         <div class="autorize">
           <h3 class="autorize__login-text"><?php echo $_SESSION['logged_user']->login; ?></h3><br/>
           <a href="logout.php" class="autorize__logout">Выйти</a>
@@ -69,12 +73,12 @@
 			<a href="/login.php">Авторизация</a>
 			<a href="/signup.php">Регистрация</a>
 		</div> -->
-    <?php 
+    <!-- <?php 
       ob_start();
       header('Location: /login.php');
       ob_end_flush();
       die();
-    ?>
+    ?> -->
 	<?php endif; ?>
 </body>
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
@@ -88,6 +92,19 @@
   $(document).ready(function() {
     var calendarEl = document.getElementById('calendar');
     var data = {};
+    $('#txtButton').on('click', function() {
+      $.ajax({
+        url: "/download.php",
+        type: "post",
+        data: {},
+        success: function(data) {
+          window.location = 'download.php';
+        }
+      })
+    })
+
+
+
     $('.enter_bg').on('click', function() {
       $('.enter').addClass('hide')
       $('.enter_form').addClass('hide')
