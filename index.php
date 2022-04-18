@@ -75,7 +75,7 @@
 		</div> -->
     <!-- <?php 
       ob_start();
-      header('Location: /login.php');
+      header('Location: login.php');
       ob_end_flush();
       die();
     ?> -->
@@ -102,8 +102,6 @@
         }
       })
     })
-
-
 
     $('.enter_bg').on('click', function() {
       $('.enter').addClass('hide')

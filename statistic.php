@@ -20,7 +20,6 @@
   $dates = array_map('dates', $tt);
   $counts = array_map('counts', $tt);
 
-  var_dump($dates);
   var_dump($counts);
   // $js_array = json_encode($php_array);
   // echo "var javascript_array = ". $js_array . ";\n";
@@ -43,7 +42,7 @@
   const data = {
     labels: labels,
     datasets: [{
-      label: 'My First dataset',
+      label: 'Статистика',
       backgroundColor: 'rgb(255, 99, 132)',
       borderColor: 'rgb(255, 99, 132)',
       data: <?php echo json_encode($counts); ?>,

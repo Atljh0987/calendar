@@ -82,15 +82,15 @@
 						<span class="focus-input100"></span>
 					</div>
 
-					<!-- <div class="text-right p-t-13 p-b-23">
+					<div class="text-right p-t-13 p-b-23">
 						<span class="txt1">
-							Forgot
+							
 						</span>
 
-						<a href="#" class="txt2">
-							Username / Password?
+						<a href="resetPassword.php" class="txt2">
+							Восстановить пароль
 						</a>
-					</div> -->
+					</div>
 
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn" type="submit" name="do_login">
