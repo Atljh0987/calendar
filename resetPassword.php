@@ -60,9 +60,10 @@
                     return implode($pass); //turn the array into a string
                 }
 
-                $message = "Ваш новый пароль: " . randomPassword();
+				// $password = randomPassword();
 
-                var_dump($message);
+				$password = '123';
+                $message = "Ваш новый пароль: " . $password;
 
                 // На случай если какая-то строка письма длиннее 70 символов мы используем wordwrap()
                 // $message = wordwrap($message, 70, "\r\n");
@@ -71,19 +72,18 @@
                 mail($data['email'] , 'Восстановление пароля', $message);
 				
 				//ошибок нет, теперь регистрируем                
-				// $user = R::dispense('users');
-				
+				$user = R::findOne( 'users', ' email = ? ', [$data['email']]);
 				// $user->login = $data['login'];
 				// $user->email = $data['email'];
-				// $user->password = password_hash($data['password'], PASSWORD_DEFAULT);
-				// R::store($user);
+				$user->password = password_hash($password, PASSWORD_DEFAULT);
+				R::store($user);
+				echo '<div id="errors" style="color:green;">Новый пароль отправлен на почту</div><hr>';
 				
-				
-				// $_SESSION['logged_user'] = $user;
-				// ob_start();
-				// header('Location: /index.php');
-				// ob_end_flush();
-				// die();
+				$_SESSION['logged_user'] = $user;
+				ob_start();
+				header('Location: /login.php');
+				ob_end_flush();
+				die();
 			}
             else
 			{

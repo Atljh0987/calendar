@@ -6,8 +6,10 @@
   require 'db.php';
 
   $tt = R::getAll( "SELECT date(start_event) st, count(title) count FROM timetables 
-  where start_event >= CURDATE() and user='" . 
-  $_SESSION['logged_user']->login ."' GROUP BY date(start_event) ");
+  where start_event >= CURDATE() and user_id='" . 
+  $_SESSION['logged_user']->id ."' GROUP BY date(start_event) ");
+
+  // var_dump($tt);
 
   function dates($t) {
     return $t["st"];
@@ -20,7 +22,7 @@
   $dates = array_map('dates', $tt);
   $counts = array_map('counts', $tt);
 
-  var_dump($counts);
+  // var_dump($counts);
   // $js_array = json_encode($php_array);
   // echo "var javascript_array = ". $js_array . ";\n";
   ?>
@@ -50,7 +52,7 @@
   };
 
   const config = {
-    type: 'line',
+    type: 'bar',
     data: data,
     options: {}
   };
