@@ -48,11 +48,10 @@
             
 			if ( empty($errors) )
 			{
-
                 function randomPassword() {
                     $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-                    $pass = array(); //remember to declare $pass as an array
-                    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+                    $pass = array();
+                    $alphaLength = strlen($alphabet) - 1;
                     for ($i = 0; $i < 8; $i++) {
                         $n = rand(0, $alphaLength);
                         $pass[] = $alphabet[$n];
@@ -60,21 +59,15 @@
                     return implode($pass); //turn the array into a string
                 }
 
-				// $password = randomPassword();
+				$password = randomPassword();
 
-				$password = '123';
                 $message = "Ваш новый пароль: " . $password;
-
-                // На случай если какая-то строка письма длиннее 70 символов мы используем wordwrap()
-                // $message = wordwrap($message, 70, "\r\n");
 
                 // Отправляем
                 mail($data['email'] , 'Восстановление пароля', $message);
 				
 				//ошибок нет, теперь регистрируем                
 				$user = R::findOne( 'users', ' email = ? ', [$data['email']]);
-				// $user->login = $data['login'];
-				// $user->email = $data['email'];
 				$user->password = password_hash($password, PASSWORD_DEFAULT);
 				R::store($user);
 				echo '<div id="errors" style="color:green;">Новый пароль отправлен на почту</div><hr>';

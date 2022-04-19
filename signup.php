@@ -163,7 +163,7 @@
 
 					<div class="container-login100-form-btn">
 						<button class="login100-form-btn" type="submit" name="do_signup">
-							Sign UP
+							Зарегистрироваться
 						</button>
 					</div>
 

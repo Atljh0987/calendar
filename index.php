@@ -6,7 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
   <link href='node_modules/fullcalendar/main.min.css' rel='stylesheet' />
-  <!-- <link href='node_modules/bootstrap/dist/css/bootstrap.min.css' rel='stylesheet' /> -->
   <link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
 <body>
@@ -18,7 +17,7 @@
       <header class="header">
         <h1 class="header__logo">Календарь-планировщик</h1>
         <div>
-          <div id="txtButton" class="autorize__logout">Выгрузить</div>
+          <div id="txtButton" class="autorize__logout" style="cursor: pointer; margin-bottom: 15px;">Выгрузить</div>
           <a href="statistic.php" class="autorize__logout">Статистика</a>
         </div>
         <div class="autorize">
@@ -158,6 +157,7 @@
       let start = $('.add_time-start').val()
       let end = $('.add_time-end').val()
       let commentary = $('.add_commentary').val()
+      let compareDates = new Date(start).getTime() < new Date(end).getTime();
 
       if(title && start && end) {    
         $('.enter').addClass('hide')
@@ -178,7 +178,10 @@
           $('.add_time-end').val("")
           $('.add_commentary').val("")
       } else {
-        $('.add_error').text("Название и время обязательны к заполнению")
+        if(compareDates)
+          $('.add_error').text("Название и время обязательны к заполнению")
+        else
+          $('.add_error').text("Время начала события должно быть больше времени окончания")
       }
     })
 

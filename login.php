@@ -32,7 +32,10 @@
 	$data = $_POST;
 	if ( isset($data['do_login']) )
 	{
-		$user = R::findOne('users', 'login = ?', array($data['login']));
+		// var_dump([$data['login']]);
+		$user = R::findOne('users', 'login = ?', [$data['login']]);
+		
+		
 		if ( $user )
 		{
 			//логин существует
@@ -40,6 +43,7 @@
 			{
 				//если пароль совпадает, то нужно авторизовать пользователя
 				$_SESSION['logged_user'] = $user;
+				// var_dump($user);
 				ob_start();
 				header('Location: /index.php');
 				ob_end_flush();

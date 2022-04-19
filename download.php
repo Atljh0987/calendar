@@ -3,9 +3,13 @@
 
   $data = $_POST;
 
-  $tt = R::getAll( "SELECT title, start_event, end_event, commentary FROM timetables where user='" .  $_SESSION['logged_user']->login ."'");
+  $tt = R::getAll( 
+    
+  "SELECT title, start_event, end_event, commentary 
+  FROM timetables 
+  where start_event >= CURDATE() and user_id='" .  $_SESSION['logged_user']->id ."'");
 
-  $file = "test.txt";
+  $file = "timetable.txt";
   $txt = fopen($file, "w") or die("Unable to open file!");
   foreach($tt as $el) {
     $st = new DateTime($el['start_event']);
