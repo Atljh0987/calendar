@@ -28,9 +28,6 @@
 
     <div class="wrapper">
       <div class="container">
-        <!-- <div class="container_settings">
-          <h1>Контейнер</h1>
-        </div> -->
         <div id="calendar"></div>
       </div>
     </div>
@@ -115,9 +112,10 @@
       let title = data.title
       let start = $('.enter_time-start').val()
       let end = $('.enter_time-end').val()
-      let commentary = $('.enter_commentary').val()
+      let commentary = $('.enter_commentary').val()      
+      let compareDates = new Date(start).getTime() < new Date(end).getTime();
 
-      if(start && end) {
+      if(start && end && compareDates) {
         $('.enter').addClass('hide')
         $('.add_form').addClass('hide')
         $('.enter_form').addClass('hide')
@@ -131,7 +129,10 @@
           }
         })
       } else {
-        $('.enter_error').text("Поля с датой и временем обязательны к заполнению")
+        if(compareDates)
+          $('.enter_error').text("Название и время обязательны к заполнению")
+        else
+          $('.enter_error').text("Время начала события должно быть больше времени окончания")
       }
     })
 
@@ -159,7 +160,7 @@
       let commentary = $('.add_commentary').val()
       let compareDates = new Date(start).getTime() < new Date(end).getTime();
 
-      if(title && start && end) {    
+      if(title && start && compareDates) {    
         $('.enter').addClass('hide')
         $('.add_form').addClass('hide')
         $('.enter_form').addClass('hide')
